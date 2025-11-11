@@ -1,0 +1,85 @@
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+
+char stackArr[100];
+int top = -1;
+
+// Stack operations
+void push(char c) {
+    stackArr[++top] = c;
+}
+
+char pop() {
+    if (top == -1)
+        return '\0';
+    return stackArr[top--];
+}
+
+char peek() {
+    if (top == -1)
+        return '\0';
+    return stackArr[top];
+}
+
+// Precedence function
+int precedence(char c) {
+    if (c == '^') return 3;
+    if (c == '*' || c == '/') return 2;
+    if (c == '+' || c == '-') return 1;
+    return 0;
+}
+
+// Convert Infix to Postfix
+string infixToPostfix(string exp) {
+    string result = "";
+    for (int i = 0; i < exp.length(); i++) {
+        char c = exp[i];
+
+        if (isalnum(c))  // operand (A, B, 1, 2, etc.)
+            result += c;
+        else if (c == '(')
+            push(c);
+        else if (c == ')') {
+            while (peek() != '(' && top != -1)
+                result += pop();
+            pop(); // remove '('
+        }
+        else { // operator
+            while (top != -1 && precedence(peek()) >= precedence(c))
+                result += pop();
+            push(c);
+        }
+    }
+    while (top != -1)
+        result += pop();
+
+    return result;
+}
+
+// Convert Infix to Prefix
+string infixToPrefix(string exp) {
+    reverse(exp.begin(), exp.end());
+    for (int i = 0; i < exp.length(); i++) {
+        if (exp[i] == '(') exp[i] = ')';
+        else if (exp[i] == ')') exp[i] = '(';
+    }
+
+    string postfix = infixToPostfix(exp);
+    reverse(postfix.begin(), postfix.end());
+    return postfix;
+}
+
+// Main function
+int main() {
+    string infix;
+    cout << "Enter infix expression: ";
+    cin >> infix;
+
+    cout << "Postfix: " << infixToPostfix(infix) << endl;
+    cout << "Prefix: " << infixToPrefix(infix) << endl;
+
+    return 0;
+}
+
