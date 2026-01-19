@@ -14,7 +14,60 @@ class Linkedlist
     Node tail;
     int size=0;
 
+    public void delete(int idx)
+    {
+        if(idx<0 ||idx>=size ) 
+        {
+            System.out.println("Invalid");return;
+        }
+        if(idx==0)
+        {
+            deleteAtHead();
+            
+        }
+        Node temp=head;
+        for(int i=1;i<idx;i++)
+        {
+            temp=temp.next;
 
+        }
+
+        temp.next=temp.next.next;
+        if(idx==size-1) tail=temp;
+        size--;
+    }
+    public void insert(int idx,int val)
+    {
+        if(idx<0 ||idx>size ) 
+        {
+            System.out.println("Invalid");return;
+        }
+        if(idx==0)addAtHead(val);
+        else if(idx==size) addAtTail(val);
+        else
+        {
+            Node nw =new Node(val);
+            Node temp=head;
+            for(int i=1;i<idx;i++)
+            {
+                temp=temp.next;
+                
+            }
+            nw.next=temp.next;
+                temp.next=nw;
+            size++;
+        }
+    }
+    public int search(int val)
+    {   Node temp=head;
+        int idx=0;
+        if(head==null) return -1;
+        while(temp!=null)
+        {   if(temp.data==val)return idx;
+            temp=temp.next;idx++;
+        }
+        return -1;
+    }
      public  void printlist(Node head)
     {
         Node temp=head;
@@ -86,6 +139,7 @@ public class LinkedListDS {
 
         //delete when list is empty:
         
+        
         //insertion: at head & tail:
         ll.addAtTail(10);ll.printlist(ll.head);
         ll.deleteAtHead();
@@ -108,7 +162,19 @@ public class LinkedListDS {
         ll.deleteAtHead();
         ll.printlist(ll.head);
         System.out.println(ll.size);
-
+        ll.addAtHead(40);
+        ll.addAtHead(50);
+        ll.addAtTail(90);
+        ll.printlist(ll.head);
+        System.out.println(ll.search(100));
+        ll.insert(3,60);
+        ll.printlist(ll.head);
+        ll.delete(2);
+        ll.printlist(ll.head);
+        int a=(5+1)/2;
+        int b=(4+0)/2;
+        System.out.println(a);
+        System.out.println(b);
 
            
     }
